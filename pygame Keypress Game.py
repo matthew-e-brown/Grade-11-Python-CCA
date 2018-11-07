@@ -148,7 +148,7 @@ mistakesLeft = monitorFontBold.render("Mistakes Remaining:", True, WHITE)
 
 ##Define some Images
 
-imgBKGD = pygame.image.load("metal texture.png")#.convert()
+imgBKGD = pygame.image.load("metal texture.png").convert()
 
 ## Define some variables
 ## most of these are declared here so the game has a starting point.
@@ -324,7 +324,7 @@ def getCORSpot(key):
         elif key == 105: CORKeyN = 7
         elif key == 111: CORKeyN = 8
         elif key == 112: CORKeyN = 9
-        
+
     elif key == 97 or key == 115 or key == 100 or key == 102 or key == 103 or key == 104 or key == 106 or key == 107 or key == 108:
         CORKeyRow = 1
         if key == 97: CORKeyN = 0
