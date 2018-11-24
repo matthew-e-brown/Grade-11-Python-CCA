@@ -51,7 +51,6 @@ monitorFontBig = pygame.font.Font("C:/Windows/Fonts/consola.ttf", 62)
 monitorFontBigBold = pygame.font.Font("C:/Windows/Fonts/consolab.ttf", 62)
 
 ##Define some Texts
-
 def timerText(x, y): ## This has a special function so I can blit two chunks of text together using x and y as arugments. It keeps things relative.
     if int((timer-elapsed)*100+0.5)/100 > 0 and strikes > mistakes:
         timerText1 = monitorFont.render(">>> You have " + str(int((timer - elapsed)*100+0.5)/100), True, WHITE)
@@ -64,82 +63,25 @@ def timerText(x, y): ## This has a special function so I can blit two chunks of 
         screen.blit(timerText,[x, y])
 
 def highscoresText(x, y): ## Running this command will blit a block of the highscores onto the screen as if it was a sprite.
-    highscores = scoresSTRING() #the scoresSTRING() function returns a list made of tuples, that look like: (ANA, 14313) #(not that she'd ever get a score that high)
-    names = scoresSTRING()
+    highscores = []
+    names = [];
+    for string in scoresSTRING():
+        highscores.append(string[0])
+        names.append(string[1])
 
-    for i in range(0, (len(highscores))):
-        highscores[i] = (highscores[i])[0]
-    for i in range(0, (len(names))):
-        names[i] = (names[i])[1]
+    highscoresText = monitorFont.render(">>> Highscores are:", True, WHITE)
 
-    ## ^^ that block takes the two lists names and highscores (which both look the same currently)
-    ## and makes them things like (ANA, MAT, ZAC, MVM) and (132, 20000, 1220, 0) (except in order).
-
-    highscoresText    = monitorFont.render(">>> Highscores are:", True, WHITE)
-
-    if "b" not in highscores[0]:
-        highscore1Text      = monitorFont.render(">>> 1.  " + names[0] + " -- " + highscores[0], True, WHITE)
-    elif "b" in highscores[0]:
-        highscore1Text      = monitorFontBold.render(">>> 1.  " + names[0] + " -- " + highscores[0].split(":")[0], True, YELLOW)
-
-    if "b" not in highscores[1]:
-        highscore2Text      = monitorFont.render(">>> 2.  " + names[1] + " -- " + highscores[1], True, WHITE)
-    elif "b" in highscores[1]:
-        highscore2Text      = monitorFontBold.render(">>> 2.  " + names[1] + " -- " + highscores[1].split(":")[0], True, YELLOW)
-
-    if "b" not in highscores[2]:
-        highscore3Text      = monitorFont.render(">>> 3.  " + names[2] + " -- " + highscores[2], True, WHITE)
-    elif "b" in highscores[2]:
-        highscore3Text      = monitorFontBold.render(">>> 3.  " + names[2] + " -- " + highscores[2].split(":")[0], True, YELLOW)
-
-    if "b" not in highscores[3]:
-        highscore4Text      = monitorFont.render(">>> 4.  " + names[3] + " -- " + highscores[3], True, WHITE)
-    elif "b" in highscores[3]:
-        highscore4Text      = monitorFontBold.render(">>> 4.  " + names[3] + " -- " + highscores[3].split(":")[0], True, YELLOW)
-
-    if "b" not in highscores[4]:
-        highscore5Text      = monitorFont.render(">>> 5.  " + names[4] + " -- " + highscores[4], True, WHITE)
-    elif "b" in highscores[4]:
-        highscore5Text      = monitorFontBold.render(">>> 5.  " + names[4] + " -- " + highscores[4].split(":")[0], True, YELLOW)
-
-    if "b" not in highscores[5]:
-        highscore6Text      = monitorFont.render(">>> 6.  " + names[5] + " -- " + highscores[5], True, WHITE)
-    elif "b" in highscores[5]:
-        highscore6Text      = monitorFontBold.render(">>> 6.  " + names[5] + " -- " + highscores[5].split(":")[0], True, YELLOW)
-
-    if "b" not in highscores[6]:
-        highscore7Text      = monitorFont.render(">>> 7.  " + names[6] + " -- " + highscores[6], True, WHITE)
-    elif "b" in highscores[6]:
-        highscore7Text      = monitorFontBold.render(">>> 7.  " + names[6] + " -- " + highscores[6].split(":")[0], True, YELLOW)
-
-    if "b" not in highscores[7]:
-        highscore8Text      = monitorFont.render(">>> 8.  " + names[7] + " -- " + highscores[7], True, WHITE)
-    elif "b" in highscores[7]:
-        highscore8Text      = monitorFontBold.render(">>> 8.  " + names[7] + " -- " + highscores[7].split(":")[0], True, YELLOW)
-
-    if "b" not in highscores[8]:
-        highscore9Text      = monitorFont.render(">>> 9.  " + names[8] + " -- " + highscores[8], True, WHITE)
-    elif "b" in highscores[8]:
-        highscore9Text      = monitorFontBold.render(">>> 9.  " + names[8] + " -- " + highscores[8].split(":")[0], True, YELLOW)
-
-    if "b" not in highscores[9]:
-        highscore10Text      = monitorFont.render(">>> 10. " + names[9] + " -- " + highscores[9], True, WHITE)
-    elif "b" in highscores[9]:
-        highscore10Text      = monitorFontBold.render(">>> 10. " + names[9] + " -- " + highscores[9].split(":")[0], True, YELLOW)
-
+    highscoresListText = []
+    for i, score in enumerate(highscores, 0):
+        c = WHITE if "b" not in score else YELLOW
+        if "b" in score:
+            score = score.split(":")[0]
+        highscoresListText.append(monitorFont.render(">>> {0}. {1} --- {2}".format(i, names[i], score), True, c))
     ## ^^ pretty self-explanatory. The one that is the newly achieved high scores is bolded, hence the ":b".
 
     screen.blit(highscoresText, [x, y])
-    screen.blit(highscore1Text, [x, y+40])
-    screen.blit(highscore2Text, [x, y+60])
-    screen.blit(highscore3Text, [x, y+80])
-    screen.blit(highscore4Text, [x, y+100])
-    screen.blit(highscore5Text, [x, y+120])
-    screen.blit(highscore6Text, [x, y+140])
-    screen.blit(highscore7Text, [x, y+160])
-    screen.blit(highscore8Text, [x, y+180])
-    screen.blit(highscore9Text, [x, y+200])
-    screen.blit(highscore10Text, [x, y+220])
+    for i, scoreText in enumerate(highscoresListText, 0):
+        screen.blit(scoreText, [x, y+40+(20*i)])
 
     ## ^^ put them all on the screen right after each other
 
@@ -184,7 +126,6 @@ meme_hack = False ## a hidden function they can activate in the game :P
 ## Define some game functions
 
 def timerGraphic(cx, cy, radius):
-
     ##This function, along with its arguments, allows for the timer circle to be drawn
     #anywhere on the screen, and have all it's pieces stay together.
 
@@ -265,33 +206,12 @@ def lifeGraphic(cx, cy, h, w):
     screen.blit(mistakesLeft, [x + (w*1/100), y - (h*2/3)])
 
 def drawKeys(color):
-
-    key_locations_top_X = [x[0] for x in key_locations_top]
-    key_locations_top_Y = [y[1] for y in key_locations_top]
-    ## ^^ separates x from y and stores them in separate lists
-    key_locations_mid_X = [x[0] for x in key_locations_mid]
-    key_locations_mid_Y = [y[1] for y in key_locations_mid]
-    ## ^^ this is the only code I found on the internet, LOL
-    key_locations_bot_X = [x[0] for x in key_locations_bot]
-    key_locations_bot_Y = [y[1] for y in key_locations_bot]
-
-    for i in range(len(key_locations_top)):
-        key_location_top_X = key_locations_top_X[i]
-        key_location_top_Y = key_locations_top_Y[i]
-
-        pygame.draw.rect(screen, color, [key_location_top_X, key_location_top_Y, 52, 52])
-
-    for i in range(len(key_locations_mid)):
-        key_location_mid_X = key_locations_mid_X[i]
-        key_location_mid_Y = key_locations_mid_Y[i]
-
-        pygame.draw.rect(screen, color, [key_location_mid_X, key_location_mid_Y, 52, 52])
-
-    for i in range(len(key_locations_bot)):
-        key_location_bot_X = key_locations_bot_X[i]
-        key_location_bot_Y = key_locations_bot_Y[i]
-
-        pygame.draw.rect(screen, color, [key_location_bot_X, key_location_bot_Y, 52, 52])
+    for location in key_locations_top:
+        pygame.draw.rect(screen, color, [location[0], location[1], 52, 52])
+    for location in key_locations_mid:
+        pygame.draw.rect(screen, color, [location[0], location[1], 52, 52])
+    for location in key_locations_bot:
+        pygame.draw.rect(screen, color, [location[0], location[1], 52, 52])
 
     if color == LIGHTGREEN:
         pygame.draw.line(screen, GREEN, (360, 630), (396, 630), 2) #F key's bump
@@ -306,46 +226,22 @@ def getCORKey():
     return CORkey
     ## The randint is 97, 122 because the numbers 97 to 122 in ASCII represent "a" to "z".
 
+allKeys = [
+    [113, 119, 101, 114, 116, 121, 117, 105, 111, 112],
+    [97, 115, 100, 102, 103, 104, 106, 107, 108],
+    [112, 120, 99, 118, 98, 110, 109]
+]
+
 def getCORSpot(key):
     ## This determines what row, and what key on that row starting from the left, each letter
     ## belongs to. This makes it very easy to use with lists.
     global CORKeyRow
     global CORKeyN
 
-    if key == 113 or key == 119 or key == 101 or key == 114 or key == 116 or key == 121 or key == 117 or key == 105 or key == 111 or key == 112:
-        CORKeyRow = 0
-        if key == 113: CORKeyN = 0
-        elif key == 119: CORKeyN = 1
-        elif key == 101: CORKeyN = 2
-        elif key == 114: CORKeyN = 3
-        elif key == 116: CORKeyN = 4
-        elif key == 121: CORKeyN = 5
-        elif key == 117: CORKeyN = 6
-        elif key == 105: CORKeyN = 7
-        elif key == 111: CORKeyN = 8
-        elif key == 112: CORKeyN = 9
-
-    elif key == 97 or key == 115 or key == 100 or key == 102 or key == 103 or key == 104 or key == 106 or key == 107 or key == 108:
-        CORKeyRow = 1
-        if key == 97: CORKeyN = 0
-        elif key == 115: CORKeyN = 1
-        elif key == 100: CORKeyN = 2
-        elif key == 102: CORKeyN = 3
-        elif key == 103: CORKeyN = 4
-        elif key == 104: CORKeyN = 5
-        elif key == 106: CORKeyN = 6
-        elif key == 107: CORKeyN = 7
-        elif key == 108: CORKeyN = 8
-
-    elif key == 122 or key == 120 or key == 99 or key == 118 or key == 98 or key == 110 or key == 109:
-        CORKeyRow = 2
-        if key == 122: CORKeyN = 0
-        elif key == 120: CORKeyN = 1
-        elif key == 99: CORKeyN = 2
-        elif key == 118: CORKeyN = 3
-        elif key == 98: CORKeyN = 4
-        elif key == 110: CORKeyN = 5
-        elif key == 109: CORKeyN = 6
+    for row in allKeys:
+        if key in row:
+            CORKeyRow = allKeys.index(row)
+            CORKeyN = row.index(key)
 
 def scoresDEF(): ##<< This function grabs the scores from the highscores.txt and puts the new score in it's place
     highscores = []
@@ -392,7 +288,6 @@ def scoresSTRING(): ##<< this function returns the same list as the first functi
             ##^^ the "new" score on the list is now (11111:b, ABC) so the program knows to bold it
         else:
             highscores[i] = ( str((highscores[i])[0]), (highscores[i])[1] )
-
     return highscores
 
 def scoresWRITE(): ##<< writes the new list to file for storage
@@ -403,8 +298,8 @@ def scoresWRITE(): ##<< writes the new list to file for storage
     file = open("highscores.txt", "r+")
     file.seek(0)
     file.truncate()
-    for i in range(0, 10):
-        file.write(highscores[i])
+    for hscore in highscores:
+        file.write(hscore)
     file.close()
 
 def scoresRESET(): ##<< resets the file and score to preset defaults.
@@ -428,12 +323,12 @@ def scoresRESET(): ##<< resets the file and score to preset defaults.
     score = 0
     name = ["A", "A", "A"]
 
-    for i in range(0, 10):
-        file.write(resetList[i])
+    for string in resetList:
+        file.write(string)
 
     file.close()
 
-## Main Game: ----------------------------------------------------------------------------------------------------------------------------------------------------------!!!
+## Main Game: -----------------------------------------------------------------------------------------------------------------!!!
 while True:
     ## initializes the key's locations --
     key_locations = []
@@ -471,7 +366,6 @@ while True:
     key_locations.append(key_locations_top)
     key_locations.append(key_locations_mid)
     key_locations.append(key_locations_bot)
-
     ## --
 
     ## Introduction: -----------------------------------------------
@@ -491,19 +385,17 @@ while True:
         pygame.draw.rect(screen, BLACK, [140, 80, 720, 355]) ##Monitor Screen
         drawKeys(LIGHTRED)
 
-        explainText1 = monitorFont.render(">>> In this game, you will have to press keys as they turn red on", True, WHITE)
-        explainText2 = monitorFont.render(">>> the keyboard you see below you.", True, WHITE)
-        explainText3 = monitorFont.render(">>> You have 30 seconds, although each key you press will", True, WHITE)
-        explainText4 = monitorFont.render(">>> earn you 0.5 extra.", True, WHITE)
-        explainText5 = monitorFont.render(">>> You can make 5 mistakes, the sixth will make you lose.", True, WHITE)
-        explainText6 = monitorFont.render(">>> Press any key when you are ready to continue.", True, WHITE)
+        explainText = [
+            ">>> In this game, you will have to press keys as they turn red on",
+            ">>> the keyboard you see below you.",
+            ">>> You have 30 seconds, although each key you press will",
+            ">>> earn you 0.5 extra.",
+            ">>> You can make 5 mistakes, the sixth will make you lose.",
+            ">>> Press any key when you are ready to continue."
+        ]
 
-        screen.blit(explainText1, [160, 100])
-        screen.blit(explainText2, [160, 120])
-        screen.blit(explainText3, [160, 140])
-        screen.blit(explainText4, [160, 160])
-        screen.blit(explainText5, [160, 180])
-        screen.blit(explainText6, [160, 200])
+        for i, line in enumerate(explainText, 0):
+            screen.blit(monitorFont.render(line, True, WHITE), [160, 100 + (20 * i)])
 
         pygame.display.flip()
         clock.tick(60)
